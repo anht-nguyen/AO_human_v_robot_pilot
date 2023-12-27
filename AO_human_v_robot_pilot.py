@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 This experiment was created using PsychoPy3 Experiment Builder (v2023.2.3),
-    on December 27, 2023, at 10:11
+    on December 27, 2023, at 14:26
 If you publish work using this script the most relevant publication is:
 
     Peirce J, Gray JR, Simpson S, MacAskill M, Höchenberger R, Sogo H, Kastman E, Lindeløv JK. (2019) 
@@ -325,17 +325,17 @@ def run(expInfo, thisExp, win, inputs, globalClock=None, thisSession=None):
     
     # --- Initialize components for Routine "stimShuffler" ---
     # Run 'Begin Experiment' code from codeShuffler
-    from numpy.random import choice
-    import csv
-    import datetime
+    #from numpy.random import choice
+    #import csv
+    #import datetime
     
     counterBlock = 0
     
     cbBlockList = [] # List of blocks in counterbalanced manner
-    dictBlockList = [] # List of block dictionaries, each contains 
-    #objUniqueList = [] 
+    dictBlockList = [] # List of block dictionaries, each contains  
+    condBlockList = [] # LIST OF CONDITION FOR EACH BLOCK
     
-    condBlockList = []
+    
     
     # --- Initialize components for Routine "welcomeScreen" ---
     textWelcome = visual.TextStim(win=win, name='textWelcome',
@@ -499,11 +499,6 @@ def run(expInfo, thisExp, win, inputs, globalClock=None, thisSession=None):
         thisExp.addData('stimLoader.stopped', globalClock.getTime())
         # the Routine "stimLoader" was not non-slip safe, so reset the non-slip timer
         routineTimer.reset()
-        thisExp.nextEntry()
-        
-        if thisSession is not None:
-            # if running in a Session with a Liaison client, send data up to now
-            thisSession.sendExperimentData()
     # completed N_rep repeats of 'loopLoader'
     
     
@@ -512,7 +507,16 @@ def run(expInfo, thisExp, win, inputs, globalClock=None, thisSession=None):
     # update component parameters for each repeat
     thisExp.addData('stimShuffler.started', globalClock.getTime())
     # Run 'Begin Routine' code from codeShuffler
-    N_condition = len(np.unique(condition_list)) # number of conditions: human and robot, left and right arm
+    def find_unique(arr):
+        unique_elements = []
+        for item in arr:
+            if item not in unique_elements:
+                unique_elements.append(item)
+        return unique_elements
+    
+    unique_conditions = find_unique(condition_list) # list of unique conditions (n=4)
+    
+    N_condition = len(unique_conditions) # number of conditions: human and robot, left and right arm
     N_stim = int(len(action_list)/(N_rep*N_condition)) # number of action stimuli: 8
     
     N_block = N_rep * N_condition # number of blocks = 4x4 = 16
@@ -520,7 +524,7 @@ def run(expInfo, thisExp, win, inputs, globalClock=None, thisSession=None):
     
     # ASSIGN ITEMS INTO BLOCKS AND SHUFFLE THEM WITHIN EACH BLOCK (Errante et al 2020)
     block_list = []
-    for cond in np.unique(condition_list):
+    for cond in unique_conditions:
         actionCond = []
         for idx in range(len(condition_list)):
             if condition_list[idx] == cond:
@@ -528,32 +532,45 @@ def run(expInfo, thisExp, win, inputs, globalClock=None, thisSession=None):
         checkConditions = False
         while not checkConditions:
             shuffle(actionCond)
-            count = 0
-            for i in range(len(actionCond)-2):
-                if ((actionCond[i] == actionCond[i+1]) & (actionCond[i] == actionCond[i+2])):
-                    count =+ 1
-            if count == 0:
-                checkConditions = True
+            for i in range(len(actionCond) - 2):
+                if actionCond[i] == actionCond[i + 1] == actionCond[i + 2]:
+                    break
+                else:
+                    checkConditions = True
+    
         blockCond = [actionCond[i:i+N_blockStim] for i in range(0, len(actionCond), N_blockStim)]
         block_list.append(blockCond)
-    block_list = np.array(block_list).reshape(N_block, N_stim)
-    #print('## block list', block_list)
+    
+    reshaped_list = []
+    # Iterate through the original list and append inner lists to the reshaped list
+    for outer_list in block_list:
+        for inner_list in outer_list:
+            reshaped_list.append(inner_list)
+    block_list = reshaped_list # shape of (16,8) (16 blocks, 8 items per block)
+    #print("#######", block_list[0])
+    #print("row: ", len(block_list), ", column: ", len(block_list[0]))
+    #print("####", block_list)
+    
     
     # SHUFFLE BLOCKS' ORDER IN COUNTERBALANCED MANNER
-    condIdxList = [num for i in range(N_condition) for num in [i] * N_rep] # a list looking like [0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3]
+    condIdxList = [] # create a list looking like [0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3]
+    for num in range(N_condition):
+        for _ in range(N_rep):
+            condIdxList.append(num)
+    
     indexed_list = list(enumerate(condIdxList))
     checkConditions = False
     while not checkConditions:
         shuffle(indexed_list)
         shuffled_indexes, shuffled_cond = zip(*indexed_list)
-        count = 0
         for i in range(len(shuffled_cond)-2):
-            if ((shuffled_cond[i] == shuffled_cond[i+1]) & (shuffled_cond[i] == shuffled_cond[i+2])):
-                count =+ 1
-        if count == 0:
-            checkConditions = True
+            if shuffled_cond[i] == shuffled_cond[i + 1] == shuffled_cond[i + 2]:
+                break
+            else:
+                checkConditions = True
+    
     for i in shuffled_indexes:
-        cbBlockList.append(block_list[i,:])
+        cbBlockList.append(block_list[i])
     #print('cbBlockList:', cbBlockList)
     #print(cbBlockList[0])
     #print(cbBlockList[0][1])
@@ -577,24 +594,24 @@ def run(expInfo, thisExp, win, inputs, globalClock=None, thisSession=None):
         dictBlock['stimDir'] = dirList
         dictBlockList.append(dictBlock)
         
-    print('dictBlockList:', dictBlockList)
-    print(np.shape(dictBlockList))
+    #print('dictBlockList:', dictBlockList)
+    #print(np.shape(dictBlockList))
     
-    # EXPORT DICTIONARY dictBlockList
-    current_datetime = datetime.datetime.now()
-    filepath = f"./output/dictBlockList_{current_datetime.strftime('%Y-%m-%d_%H-%M-%S')}.csv"
-    with open(filepath, 'w', newline='') as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames = list(dictBlockList[0].keys()))
-        writer.writeheader()
-        for entry in dictBlockList:
-            rows = zip(entry['conditions'],entry['actions'], entry['stimDir'])
-            for row in rows:
-                writer.writerow({'conditions':row[0], 'actions':row[1], 'stimDir':row[2]})
+    ## EXPORT DICTIONARY dictBlockList
+    #current_datetime = datetime.datetime.now()
+    #filepath = f"./output/dictBlockList_{current_datetime.strftime('%Y-%m-%d_%H-%M-%S')}.csv"
+    #with open(filepath, 'w', newline='') as csvfile:
+    #    writer = csv.DictWriter(csvfile, fieldnames = list(dictBlockList[0].keys()))
+    #    writer.writeheader()
+    #    for entry in dictBlockList:
+    #        rows = zip(entry['conditions'],entry['actions'], entry['stimDir'])
+    #        for row in rows:
+    #            writer.writerow({'conditions':row[0], 'actions':row[1], 'stimDir':row[2]})
             
     # LIST OF CONDITION FOR EACH BLOCK
     for i in range(N_block):
-        condBlockList.append(np.unique(dictBlockList[i]['conditions']).tolist())
-    print("Order of condition blocks: ", condBlockList)
+        condBlockList.append(find_unique(dictBlockList[i]['conditions']))
+    #print("Order of condition blocks: ", condBlockList)
     # keep track of which components have finished
     stimShufflerComponents = []
     for thisComponent in stimShufflerComponents:
@@ -926,7 +943,7 @@ def run(expInfo, thisExp, win, inputs, globalClock=None, thisSession=None):
         thisExp.addData('restPeriod.stopped', globalClock.getTime())
         # Run 'End Routine' code from codeRest
         print(f"======= counterBlock {counterBlock} - condition: {condBlockList[counterBlock]} =======")
-        #print('Condition: ', dictBlockList[counterBlock]['conditions'])
+        
         
         counterStim = 0
         countDownN = 3
@@ -1341,11 +1358,6 @@ def run(expInfo, thisExp, win, inputs, globalClock=None, thisSession=None):
         thisExp.addData('endFuncRun.stopped', globalClock.getTime())
         # the Routine "endFuncRun" was not non-slip safe, so reset the non-slip timer
         routineTimer.reset()
-        thisExp.nextEntry()
-        
-        if thisSession is not None:
-            # if running in a Session with a Liaison client, send data up to now
-            thisSession.sendExperimentData()
     # completed N_block repeats of 'loopFuncRun'
     
     

@@ -118,14 +118,18 @@ var stimLoaderClock;
 var condition_list;
 var action_list;
 var stim_dir_list;
-var obj_list;
 var N_rep;
 var stimShufflerClock;
+var counterBlock;
+var cbBlockList;
+var dictBlockList;
+var condBlockList;
 var welcomeScreenClock;
 var textWelcome;
 var keyWelcome;
 var restPeriodClock;
 var crossRest;
+var counterStim;
 var skipRest;
 var beginBlockClock;
 var beginInstruction;
@@ -147,11 +151,16 @@ async function experimentInit() {
   condition_list = [];
   action_list = [];
   stim_dir_list = [];
-  obj_list = [];
   N_rep = 4;
   
   // Initialize components for Routine "stimShuffler"
   stimShufflerClock = new util.Clock();
+  // Run 'Begin Experiment' code from codeShuffler
+  counterBlock = 0;
+  cbBlockList = [];
+  dictBlockList = [];
+  condBlockList = [];
+  
   // Initialize components for Routine "welcomeScreen"
   welcomeScreenClock = new util.Clock();
   textWelcome = new visual.TextStim({
@@ -181,6 +190,9 @@ async function experimentInit() {
     fillColor: new util.Color('white'),
     opacity: undefined, depth: 0, interpolate: true,
   });
+  
+  // Run 'Begin Experiment' code from codeRest
+  counterStim = 0;
   
   skipRest = new core.Keyboard({psychoJS: psychoJS, clock: new util.Clock(), waitForStart: true});
   
@@ -536,6 +548,11 @@ function stimLoaderRoutineBegin(snapshot) {
     continueRoutine = true; // until we're told otherwise
     // update component parameters for each repeat
     psychoJS.experiment.addData('stimLoader.started', globalClock.getTime());
+    // Run 'Begin Routine' code from codeLoader
+    action_list.push(actions);
+    condition_list.push(conditions);
+    stim_dir_list.push(stimDir);
+    
     // keep track of which components have finished
     stimLoaderComponents = [];
     
@@ -603,6 +620,29 @@ function stimLoaderRoutineEnd(snapshot) {
 }
 
 
+var _pj;
+var find_unique;
+var unique_conditions;
+var N_condition;
+var N_stim;
+var N_block;
+var N_blockStim;
+var block_list;
+var actionCond;
+var blockCond;
+var reshaped_list;
+var condIdxList;
+var enumerated_list;
+var idx;
+var checkConditions;
+var shuffled_indexes;
+var shuffled_cond;
+var ctShuffledCounter;
+var dictBlock;
+var condList;
+var actionList;
+var dirList;
+var actionStr;
 var stimShufflerComponents;
 function stimShufflerRoutineBegin(snapshot) {
   return async function () {
@@ -615,6 +655,153 @@ function stimShufflerRoutineBegin(snapshot) {
     continueRoutine = true; // until we're told otherwise
     // update component parameters for each repeat
     psychoJS.experiment.addData('stimShuffler.started', globalClock.getTime());
+    // Run 'Begin Routine' code from codeShuffler
+    var _pj;
+    function _pj_snippets(container) {
+        function in_es6(left, right) {
+            if (((right instanceof Array) || ((typeof right) === "string"))) {
+                return (right.indexOf(left) > (- 1));
+            } else {
+                if (((right instanceof Map) || (right instanceof Set) || (right instanceof WeakMap) || (right instanceof WeakSet))) {
+                    return right.has(left);
+                } else {
+                    return (left in right);
+                }
+            }
+        }
+        container["in_es6"] = in_es6;
+        return container;
+    }
+    _pj = {};
+    _pj_snippets(_pj);
+    function find_unique_func(arr) {
+        var unique_elements;
+        unique_elements = [];
+        for (var item, _pj_c = 0, _pj_a = arr, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
+            item = _pj_a[_pj_c];
+            if ((! _pj.in_es6(item, unique_elements))) {
+                unique_elements.push(item);
+            }
+        }
+        return unique_elements;
+    }
+    find_unique = find_unique_func;
+    unique_conditions = find_unique(condition_list);
+    N_condition = unique_conditions.length;
+    N_stim = Number.parseInt((action_list.length / (N_rep * N_condition)));
+    N_block = (N_rep * N_condition);
+    N_blockStim = Number.parseInt((action_list.length / N_block));
+    block_list = [];
+    actionCond = [];
+    blockCond = [];
+    for (var cond, _pj_c = 0, _pj_a = unique_conditions, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
+        cond = _pj_a[_pj_c];
+        actionCond = [];
+        for (var idx, _pj_f = 0, _pj_d = util.range(condition_list.length), _pj_e = _pj_d.length; (_pj_f < _pj_e); _pj_f += 1) {
+            idx = _pj_d[_pj_f];
+            if ((condition_list[idx] === cond)) {
+                actionCond.push(action_list[idx]);
+            }
+        }
+        checkConditions = false;
+        while ((! checkConditions)) {
+            util.shuffle(actionCond);
+            for (var i, _pj_f = 0, _pj_d = util.range((actionCond.length - 2)), _pj_e = _pj_d.length; (_pj_f < _pj_e); _pj_f += 1) {
+                i = _pj_d[_pj_f];
+                if (((actionCond[i] === actionCond[(i + 1)]) && (actionCond[(i + 1)] === actionCond[(i + 2)]))) {
+                    break;
+                } else {
+                    checkConditions = true;
+                }
+            }
+        }
+        blockCond = function () {
+        var _pj_d = [], _pj_e = util.range(0, actionCond.length, N_blockStim);
+        for (var _pj_f = 0, _pj_g = _pj_e.length; (_pj_f < _pj_g); _pj_f += 1) {
+            var i = _pj_e[_pj_f];
+            _pj_d.push(actionCond.slice(i, (i + N_blockStim)));
+        }
+        return _pj_d;
+    }
+    .call(this);
+        block_list.push(blockCond);
+    }
+    reshaped_list = [];
+    for (var outer_list, _pj_c = 0, _pj_a = block_list, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
+        outer_list = _pj_a[_pj_c];
+        for (var inner_list, _pj_f = 0, _pj_d = outer_list, _pj_e = _pj_d.length; (_pj_f < _pj_e); _pj_f += 1) {
+            inner_list = _pj_d[_pj_f];
+            reshaped_list.push(inner_list);
+        }
+    }
+    block_list = reshaped_list;
+    condIdxList = [];
+    for (var num, _pj_c = 0, _pj_a = util.range(N_condition), _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
+        num = _pj_a[_pj_c];
+        for (var _, _pj_f = 0, _pj_d = util.range(N_rep), _pj_e = _pj_d.length; (_pj_f < _pj_e); _pj_f += 1) {
+            _ = _pj_d[_pj_f];
+            condIdxList.push(num);
+        }
+    }
+    enumerated_list = [];
+    idx = 0;
+    for (var val, _pj_c = 0, _pj_a = condIdxList, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
+        val = _pj_a[_pj_c];
+        enumerated_list.push([idx, val]);
+        idx = (idx + 1);
+    }
+    checkConditions = false;
+    shuffled_indexes = [];
+    shuffled_cond = [];
+    while ((! checkConditions)) {
+        util.shuffle(enumerated_list);
+        for (var row, _pj_c = 0, _pj_a = enumerated_list, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
+            row = _pj_a[_pj_c];
+            shuffled_indexes.push(row[0]);
+            shuffled_cond.push(row[1]);
+        }
+        for (var i, _pj_c = 0, _pj_a = util.range((shuffled_cond.length - 2)), _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
+            i = _pj_a[_pj_c];
+            if (((shuffled_cond[i] === shuffled_cond[(i + 1)]) && (shuffled_cond[(i + 1)] === shuffled_cond[(i + 2)]))) {
+                break;
+            } else {
+                checkConditions = true;
+            }
+        }
+    }
+    for (var i, _pj_c = 0, _pj_a = shuffled_indexes, _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
+        i = _pj_a[_pj_c];
+        cbBlockList.push(block_list[i]);
+    }
+    ctShuffledCounter = 0;
+    dictBlock = {};
+    condList = [];
+    actionList = [];
+    dirList = [];
+    actionStr = "";
+    for (var block, _pj_c = 0, _pj_a = util.range(N_block), _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
+        block = _pj_a[_pj_c];
+        dictBlock = {};
+        condList = [];
+        actionList = [];
+        dirList = [];
+        for (var idx, _pj_f = 0, _pj_d = util.range(N_stim), _pj_e = _pj_d.length; (_pj_f < _pj_e); _pj_f += 1) {
+            idx = _pj_d[_pj_f];
+            actionStr = cbBlockList[block][idx];
+            condList.push(actionStr.slice(0, (- 2)));
+            actionList.push(actionStr);
+            dirList.push((("./stimuli/" + actionStr) + ".mp4"));
+        }
+        dictBlock["conditions"] = condList;
+        dictBlock["actions"] = actionList;
+        dictBlock["stimDir"] = dirList;
+        dictBlockList.push(dictBlock);
+    }
+    for (var i, _pj_c = 0, _pj_a = util.range(N_block), _pj_b = _pj_a.length; (_pj_c < _pj_b); _pj_c += 1) {
+        i = _pj_a[_pj_c];
+        condBlockList.push(find_unique(dictBlockList[i]["conditions"]));
+    }
+    
     // keep track of which components have finished
     stimShufflerComponents = [];
     
@@ -924,6 +1111,7 @@ function restPeriodRoutineEachFrame() {
 }
 
 
+var countDownN;
 function restPeriodRoutineEnd(snapshot) {
   return async function () {
     //--- Ending Routine 'restPeriod' ---
@@ -933,6 +1121,11 @@ function restPeriodRoutineEnd(snapshot) {
       }
     });
     psychoJS.experiment.addData('restPeriod.stopped', globalClock.getTime());
+    // Run 'End Routine' code from codeRest
+    console.log(`======= counterBlock ${counterBlock} - condition: ${condBlockList[counterBlock]} =======`);
+    counterStim = 0;
+    countDownN = 3;
+    
     // update the trial handler
     if (currentLoop instanceof MultiStairHandler) {
       currentLoop.addResponse(skipRest.corr, level);
@@ -1044,7 +1237,6 @@ function beginBlockRoutineEachFrame() {
 }
 
 
-var countDownN;
 function beginBlockRoutineEnd(snapshot) {
   return async function () {
     //--- Ending Routine 'beginBlock' ---
