@@ -317,8 +317,6 @@ function loopLoaderLoopEndIteration(scheduler, snapshot) {
           psychoJS.experiment.nextEntry(snapshot);
         }
         scheduler.stop();
-      } else {
-        psychoJS.experiment.nextEntry(snapshot);
       }
     return Scheduler.Event.NEXT;
     }
@@ -520,8 +518,6 @@ function loopFuncRunLoopEndIteration(scheduler, snapshot) {
           psychoJS.experiment.nextEntry(snapshot);
         }
         scheduler.stop();
-      } else {
-        psychoJS.experiment.nextEntry(snapshot);
       }
     return Scheduler.Event.NEXT;
     }
