@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 This experiment was created using PsychoPy3 Experiment Builder (v2023.2.3),
-    on December 27, 2023, at 10:11
+    on December 27, 2023, at 16:09
 If you publish work using this script the most relevant publication is:
 
     Peirce J, Gray JR, Simpson S, MacAskill M, Höchenberger R, Sogo H, Kastman E, Lindeløv JK. (2019) 
@@ -158,7 +158,7 @@ def setupWindow(expInfo=None, win=None):
     if win is None:
         # if not given a window to setup, make one
         win = visual.Window(
-            size=[960, 600], fullscr=False, screen=0,
+            size=[1920, 1200], fullscr=False, screen=0,
             winType='pyglet', allowStencil=False,
             monitor='testMonitor', color=[0,0,0], colorSpace='rgb',
             backgroundImage='', backgroundFit='none',
@@ -333,9 +333,7 @@ def run(expInfo, thisExp, win, inputs, globalClock=None, thisSession=None):
     
     cbBlockList = [] # List of blocks in counterbalanced manner
     dictBlockList = [] # List of block dictionaries, each contains 
-    #objUniqueList = [] 
-    
-    condBlockList = []
+    condBlockList = [] # LIST OF CONDITION FOR EACH BLOCK
     
     # --- Initialize components for Routine "welcomeScreen" ---
     textWelcome = visual.TextStim(win=win, name='textWelcome',
@@ -379,7 +377,7 @@ def run(expInfo, thisExp, win, inputs, globalClock=None, thisSession=None):
         win, name='stimAction',
         filename=None, movieLib='ffpyplayer',
         loop=False, volume=1.0, noAudio=True,
-        pos=(0, 0), size=(0.75, 0.42), units=win.units,
+        pos=(0, 0), size=(1.125, 0.63), units=win.units,
         ori=0.0, anchor='center',opacity=None, contrast=1.0,
         depth=0
     )
@@ -499,11 +497,6 @@ def run(expInfo, thisExp, win, inputs, globalClock=None, thisSession=None):
         thisExp.addData('stimLoader.stopped', globalClock.getTime())
         # the Routine "stimLoader" was not non-slip safe, so reset the non-slip timer
         routineTimer.reset()
-        thisExp.nextEntry()
-        
-        if thisSession is not None:
-            # if running in a Session with a Liaison client, send data up to now
-            thisSession.sendExperimentData()
     # completed N_rep repeats of 'loopLoader'
     
     
@@ -528,12 +521,11 @@ def run(expInfo, thisExp, win, inputs, globalClock=None, thisSession=None):
         checkConditions = False
         while not checkConditions:
             shuffle(actionCond)
-            count = 0
             for i in range(len(actionCond)-2):
-                if ((actionCond[i] == actionCond[i+1]) & (actionCond[i] == actionCond[i+2])):
-                    count =+ 1
-            if count == 0:
-                checkConditions = True
+                if actionCond[i] == actionCond[i+1] == actionCond[i+2]:
+                    break
+                else:
+                    checkConditions = True
         blockCond = [actionCond[i:i+N_blockStim] for i in range(0, len(actionCond), N_blockStim)]
         block_list.append(blockCond)
     block_list = np.array(block_list).reshape(N_block, N_stim)
@@ -548,10 +540,10 @@ def run(expInfo, thisExp, win, inputs, globalClock=None, thisSession=None):
         shuffled_indexes, shuffled_cond = zip(*indexed_list)
         count = 0
         for i in range(len(shuffled_cond)-2):
-            if ((shuffled_cond[i] == shuffled_cond[i+1]) & (shuffled_cond[i] == shuffled_cond[i+2])):
-                count =+ 1
-        if count == 0:
-            checkConditions = True
+            if shuffled_cond[i] == shuffled_cond[i+1] == shuffled_cond[i+2]:
+                break
+            else:
+                checkConditions = True
     for i in shuffled_indexes:
         cbBlockList.append(block_list[i,:])
     #print('cbBlockList:', cbBlockList)
@@ -1341,11 +1333,6 @@ def run(expInfo, thisExp, win, inputs, globalClock=None, thisSession=None):
         thisExp.addData('endFuncRun.stopped', globalClock.getTime())
         # the Routine "endFuncRun" was not non-slip safe, so reset the non-slip timer
         routineTimer.reset()
-        thisExp.nextEntry()
-        
-        if thisSession is not None:
-            # if running in a Session with a Liaison client, send data up to now
-            thisSession.sendExperimentData()
     # completed N_block repeats of 'loopFuncRun'
     
     
