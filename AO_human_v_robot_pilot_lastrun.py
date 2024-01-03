@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 This experiment was created using PsychoPy3 Experiment Builder (v2023.2.3),
-    on January 03, 2024, at 16:50
+    on January 03, 2024, at 17:36
 If you publish work using this script the most relevant publication is:
 
     Peirce J, Gray JR, Simpson S, MacAskill M, Höchenberger R, Sogo H, Kastman E, Lindeløv JK. (2019) 
@@ -335,6 +335,7 @@ def run(expInfo, thisExp, win, inputs, globalClock=None, thisSession=None):
     cbBlockList = [] # List of blocks in counterbalanced manner
     dictBlockList = [] # List of block dictionaries, each contains 
     condBlockList = [] # LIST OF CONDITION FOR EACH BLOCK
+    #markerStimValList = []
     
     # --- Initialize components for Routine "welcomeScreen" ---
     textWelcome = visual.TextStim(win=win, name='textWelcome',
@@ -395,7 +396,7 @@ def run(expInfo, thisExp, win, inputs, globalClock=None, thisSession=None):
         loop=False, volume=1.0, noAudio=True,
         pos=(0, 0), size=(1.125, 0.63), units=win.units,
         ori=0.0, anchor='center',opacity=None, contrast=1.0,
-        depth=0
+        depth=-1
     )
     
     # --- Initialize components for Routine "endStim" ---
@@ -565,7 +566,7 @@ def run(expInfo, thisExp, win, inputs, globalClock=None, thisSession=None):
     #print('cbBlockList:', cbBlockList)
     #print(cbBlockList[0])
     #print(cbBlockList[0][1])
-    
+        
     
     # LIST OF BLOCK DICTIONARY
     # Each dictionary is a block with N_stim stimuli
@@ -1260,10 +1261,26 @@ def run(expInfo, thisExp, win, inputs, globalClock=None, thisSession=None):
             continueRoutine = True
             # update component parameters for each repeat
             thisExp.addData('stimVid.started', globalClock.getTime())
-            stimAction.setMovie(dictBlockList[counterBlock]['stimDir'][counterStim])
             # Run 'Begin Routine' code from codeStim
             print(f"counterStim {counterStim} - {dictBlockList[counterBlock]['stimDir'][counterStim]}")
             
+            
+            # ASSIGN MARKER LABELS AND MARKER VALUES FOR DIFFERENT CONDITIONS AND ACTION STIMULI
+            markerStimLabel = dictBlockList[counterBlock]['conditions'][counterStim] + '_' + dictBlockList[counterBlock]['actions'][counterStim]
+            print("markerStimLabel: ", markerStimLabel)
+            
+            actionN = int(dictBlockList[counterBlock]['actions'][counterStim][-1])
+            if dictBlockList[counterBlock]['conditions'][counterStim] == "human_left":
+                markerStimVal = 1 
+            elif dictBlockList[counterBlock]['conditions'][counterStim] == "human_right":
+                markerStimVal = 2
+            elif dictBlockList[counterBlock]['conditions'][counterStim] == "robot_left":
+                markerStimVal = 3 
+            elif dictBlockList[counterBlock]['conditions'][counterStim] == "robot_right":
+                markerStimVal = 4 
+            markerStimVal = markerStimVal * 10 + actionN
+            print("markerStimVal: ", markerStimVal)
+            stimAction.setMovie(dictBlockList[counterBlock]['stimDir'][counterStim])
             # keep track of which components have finished
             stimVidComponents = [stimAction]
             for thisComponent in stimVidComponents:
