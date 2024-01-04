@@ -202,7 +202,7 @@
         <Param val="True" valType="bool" updates="constant" name="syncScreenRefresh"/>
       </KeyboardComponent>
       <EmotivRecordingComponent name="cortex_rec" plugin="psychopy-emotiv">
-        <Param val="True" valType="bool" updates="None" name="disabled"/>
+        <Param val="False" valType="bool" updates="None" name="disabled"/>
         <Param val="" valType="code" updates="None" name="durationEstim"/>
         <Param val="cortex_rec" valType="code" updates="None" name="name"/>
         <Param val="False" valType="bool" updates="None" name="saveStartStop"/>
@@ -358,7 +358,7 @@
         <Param val="1" valType="num" updates="None" name="volume"/>
       </MovieComponent>
       <EmotivMarkingComponent name="eegStim_marker" plugin="psychopy-emotiv">
-        <Param val="True" valType="bool" updates="None" name="disabled"/>
+        <Param val="False" valType="bool" updates="None" name="disabled"/>
         <Param val="0.01" valType="code" updates="None" name="durationEstim"/>
         <Param val="$markerStimLabel" valType="str" updates="set every repeat" name="emotiv_marker_label"/>
         <Param val="$markerStimVal" valType="str" updates="set every repeat" name="emotiv_marker_value"/>
@@ -518,7 +518,7 @@
         <Param val="None" valType="str" updates="constant" name="flip"/>
         <Param val="Open Sans" valType="str" updates="constant" name="font"/>
         <Param val="LTR" valType="str" updates="None" name="languageStyle"/>
-        <Param val="0.05" valType="num" updates="constant" name="letterHeight"/>
+        <Param val="0.1" valType="num" updates="constant" name="letterHeight"/>
         <Param val="textBreakCountdown" valType="code" updates="None" name="name"/>
         <Param val="" valType="num" updates="constant" name="opacity"/>
         <Param val="0" valType="num" updates="constant" name="ori"/>
@@ -663,7 +663,7 @@
         <Param val="codeRest" valType="code" updates="None" name="name"/>
       </CodeComponent>
       <EmotivMarkingComponent name="eegBaseline_marker" plugin="psychopy-emotiv">
-        <Param val="True" valType="bool" updates="None" name="disabled"/>
+        <Param val="False" valType="bool" updates="None" name="disabled"/>
         <Param val="0.01" valType="code" updates="None" name="durationEstim"/>
         <Param val="&quot;baseline&quot;" valType="str" updates="constant" name="emotiv_marker_label"/>
         <Param val="0" valType="str" updates="constant" name="emotiv_marker_value"/>
@@ -739,7 +739,7 @@
         <Param val="" valType="list" updates="constant" name="vertices"/>
       </PolygonComponent>
       <EmotivMarkingComponent name="markerExecution" plugin="psychopy-emotiv">
-        <Param val="True" valType="bool" updates="None" name="disabled"/>
+        <Param val="False" valType="bool" updates="None" name="disabled"/>
         <Param val="0.01" valType="code" updates="None" name="durationEstim"/>
         <Param val="$markerExeLabel" valType="str" updates="set every repeat" name="emotiv_marker_label"/>
         <Param val="$markerExeVal" valType="str" updates="set every repeat" name="emotiv_marker_value"/>

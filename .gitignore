@@ -152,6 +152,7 @@ cython_debug/
 #.idea/
 *.pdf
 output/
+!output/.gitkeep
 temp/
 *.code-workspace
 .DS_Store
