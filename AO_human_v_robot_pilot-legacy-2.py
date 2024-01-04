@@ -159,7 +159,7 @@ def setupWindow(expInfo=None, win=None):
     if win is None:
         # if not given a window to setup, make one
         win = visual.Window(
-            size=[1920, 1200], fullscr=True, screen=0,
+            size=[1600, 900], fullscr=True, screen=0,
             winType='pyglet', allowStencil=False,
             monitor='testMonitor', color=[0,0,0], colorSpace='rgb',
             backgroundImage='', backgroundFit='none',
@@ -420,7 +420,7 @@ def run(expInfo, thisExp, win, inputs, globalClock=None, thisSession=None):
         win, name='stimAction',
         filename=None, movieLib='ffpyplayer',
         loop=False, volume=1.0, noAudio=True,
-        pos=(0, 0), size=(1.6, 1), units='height',
+        pos=(0, 0), size=(1.777, 1), units='height',
         ori=0.0, anchor='center',opacity=None, contrast=1.0,
         depth=-1
     )
