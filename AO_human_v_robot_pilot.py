@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 This experiment was created using PsychoPy3 Experiment Builder (v2023.2.3),
-    on January 04, 2024, at 10:38
+    on January 04, 2024, at 14:41
 If you publish work using this script the most relevant publication is:
 
     Peirce J, Gray JR, Simpson S, MacAskill M, Höchenberger R, Sogo H, Kastman E, Lindeløv JK. (2019) 
@@ -392,7 +392,7 @@ def run(expInfo, thisExp, win, inputs, globalClock=None, thisSession=None):
     
     # --- Initialize components for Routine "beginBlock" ---
     beginInstruction = visual.TextStim(win=win, name='beginInstruction',
-        text='Observe the actions presented in the following videos.',
+        text='Observe the actions presented in the following video.',
         font='Open Sans',
         pos=(0, 0.25), height=0.05, wrapWidth=None, ori=0.0, 
         color='white', colorSpace='rgb', opacity=None, 
@@ -412,7 +412,7 @@ def run(expInfo, thisExp, win, inputs, globalClock=None, thisSession=None):
         win, name='stimAction',
         filename=None, movieLib='ffpyplayer',
         loop=False, volume=1.0, noAudio=True,
-        pos=(0, 0), size=(1.125, 0.63), units=win.units,
+        pos=(0, 0), size=(1.6, 1), units='height',
         ori=0.0, anchor='center',opacity=None, contrast=1.0,
         depth=-1
     )
@@ -1817,7 +1817,7 @@ def run(expInfo, thisExp, win, inputs, globalClock=None, thisSession=None):
     
     # --- Run Routine "endTrial" ---
     routineForceEnded = not continueRoutine
-    while continueRoutine and routineTimer.getTime() < 20.0:
+    while continueRoutine:
         # get current time
         t = routineTimer.getTime()
         tThisFlip = win.getFutureFlipTime(clock=routineTimer)
@@ -1843,17 +1843,6 @@ def run(expInfo, thisExp, win, inputs, globalClock=None, thisSession=None):
             # update params
             pass
         
-        # if textEnd is stopping this frame...
-        if textEnd.status == STARTED:
-            # is it time to stop? (based on global clock, using actual start)
-            if tThisFlipGlobal > textEnd.tStartRefresh + 20-frameTolerance:
-                # keep track of stop time/frame for later
-                textEnd.tStop = t  # not accounting for scr refresh
-                textEnd.frameNStop = frameN  # exact frame index
-                # update status
-                textEnd.status = FINISHED
-                textEnd.setAutoDraw(False)
-        
         # *keyEnd* updates
         waitOnFlip = False
         
@@ -1872,19 +1861,6 @@ def run(expInfo, thisExp, win, inputs, globalClock=None, thisSession=None):
             waitOnFlip = True
             win.callOnFlip(keyEnd.clock.reset)  # t=0 on next screen flip
             win.callOnFlip(keyEnd.clearEvents, eventType='keyboard')  # clear events on next screen flip
-        
-        # if keyEnd is stopping this frame...
-        if keyEnd.status == STARTED:
-            # is it time to stop? (based on global clock, using actual start)
-            if tThisFlipGlobal > keyEnd.tStartRefresh + 20-frameTolerance:
-                # keep track of stop time/frame for later
-                keyEnd.tStop = t  # not accounting for scr refresh
-                keyEnd.frameNStop = frameN  # exact frame index
-                # add timestamp to datafile
-                thisExp.timestampOnFlip(win, 'keyEnd.stopped')
-                # update status
-                keyEnd.status = FINISHED
-                keyEnd.status = FINISHED
         if keyEnd.status == STARTED and not waitOnFlip:
             theseKeys = keyEnd.getKeys(keyList=['space'], ignoreKeys=["escape"], waitRelease=False)
             _keyEnd_allKeys.extend(theseKeys)
@@ -1929,11 +1905,8 @@ def run(expInfo, thisExp, win, inputs, globalClock=None, thisSession=None):
         thisExp.addData('keyEnd.rt', keyEnd.rt)
         thisExp.addData('keyEnd.duration', keyEnd.duration)
     thisExp.nextEntry()
-    # using non-slip timing so subtract the expected duration of this Routine (unless ended on request)
-    if routineForceEnded:
-        routineTimer.reset()
-    else:
-        routineTimer.addTime(-20.000000)
+    # the Routine "endTrial" was not non-slip safe, so reset the non-slip timer
+    routineTimer.reset()
     
     # mark experiment as finished
     endExperiment(thisExp, win=win, inputs=inputs)
