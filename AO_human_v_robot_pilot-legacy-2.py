@@ -1793,6 +1793,8 @@ def run(expInfo, thisExp, win, inputs, globalClock=None, thisSession=None):
                         # update status
                         markerExecution.status = FINISHED
                         markerExecution.status = FINISHED
+                        delta_time = tThisFlip-t  # Adding the extra time between now and the next screen flip
+                        cortex_obj.update_marker(label=markerExeLabel, delta_time=delta_time)
                 
                 # check for quit (typically the Esc key)
                 if defaultKeyboard.getKeys(keyList=["escape"]):
