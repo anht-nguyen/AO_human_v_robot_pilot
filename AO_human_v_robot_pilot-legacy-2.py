@@ -1208,7 +1208,7 @@ def run(expInfo, thisExp, win, inputs, globalClock=None, thisSession=None):
                 eegBaseline_marker.status = STARTED
                 eegBaseline_marker.status = STARTED
                 delta_time = tThisFlip-t  # Adding the extra time between now and the next screen flip
-                cortex_obj.inject_marker(value=str('0'), label='"baseline"', delta_time=delta_time)
+                cortex_obj.inject_marker(value=str('1000'), label='"baseline"', delta_time=delta_time)
                 eegBaseline_marker.start_sent = True
             
             # if eegBaseline_marker is stopping this frame...
