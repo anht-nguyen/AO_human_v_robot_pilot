@@ -17,6 +17,7 @@ Numbers | Actions
 Marker Values numbering:
 
 Numbers | Condition
+--- | ---
 1x | human_left
 2x | human_right
 3x | robot_left
