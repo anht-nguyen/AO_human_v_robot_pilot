@@ -53,7 +53,7 @@ data_length = size(Emotiv_data, 2);
 
 EEG.data = single(Emotiv_data);
 
-EEg.nbchan = 32;
+EEG.nbchan = 32;
 
 EEG.pnts = data_length;
 
